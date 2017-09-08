@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "J2ObjC"
-  s.version      = "0.9.8"
+  s.version      = "0.9.8.1"
   s.license      = { :type => 'Apache License, Version 2.0', :file => 'LICENSE' }
   s.summary      = "J2ObjC's JRE emulation library, emulates a subset of the Java runtime library."
   s.homepage     = "https://github.com/google/j2objc"
@@ -21,12 +21,13 @@ Pod::Spec.new do |s|
   s.subspec 'lib' do |lib|
     lib.frameworks = 'Security'
     lib.osx.frameworks = 'ExceptionHandling'
-    lib.xcconfig = { 'LIBRARY_SEARCH_PATHS' => '"$(PODS_ROOT)/J2ObjC/dist/lib"', \
-      'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/J2ObjC/dist/include"' }
+    lib.xcconfig = { 'LIBRARY_SEARCH_PATHS' => '"$(PODS_ROOT)/J2ObjC/dist/lib"',
+    'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/J2ObjC/dist/include"',
+    'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/J2ObjC/dist/frameworks"' }
 
     lib.subspec 'jre' do |jre|
       jre.preserve_paths = 'dist'
-      jre.libraries = 'jre_emul', 'icucore', 'z'
+      jre.libraries = 'jre_emul', 'iconv', 'z'
       # jre.xcconfig = { 'OTHER_LDFLAGS' => '-force_load ${PODS_ROOT}/J2ObjC/dist/lib/libjre_emul.a' }
     end
 
@@ -34,11 +35,6 @@ Pod::Spec.new do |s|
       jsr305.dependency 'J2ObjC/lib/jre'
       jsr305.libraries = 'jsr305'
     end
-
-    # lib.subspec 'junit' do |junit|
-    #   junit.dependency 'J2ObjC/lib/jre'
-    #   junit.libraries = 'j2objc_main', 'junit', 'mockito'
-    # end
 
     lib.subspec 'guava' do |guava|
       guava.dependency 'J2ObjC/lib/jre'
